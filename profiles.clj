@@ -1,8 +1,22 @@
-{:user {:plugins [[lein-localrepo "0.4.1" :exclusions [org.clojure/clojure]]
-                  [lein-pprint "1.1.1" :exclusions [org.clojure/clojure]]
-                  [cider/cider-nrepl "0.9.1" :exclusions [org.clojure/tools.nrepl
-                                                          org.clojure/clojure]]]
-        :jvm-opts ["-Djava.rmi.server.hostname=localhost"]
+{:user {:plugins [ ;;[lein-localrepo "0.4.1" :exclusions [org.clojure/clojure]]
+                  [lein-pprint "1.1.2" :exclusions [org.clojure/clojure]]
+                  ;;[lein-exec "0.3.6"]
+                  [org.codehaus.jsr166-mirror/jsr166y "1.7.0"]
+                  ;;[org.clojure/tools.nrepl "0.2.12"]
+                  [cider/cider-nrepl "0.13.0"]]
+        :jvm-opts ["-Djava.rmi.server.hostname=localhost"
+                   ;;"-XX:+UnlockDiagnosticVMOptions"
+                   ;;"-XX:+PrintInlining"
+                   ;;"-XX:+PrintFlagsFinal"
+                   ;;"-XX:+LogCompilation"
+                   ;;"-XX:CompileThreshold=1000"
+                   ;;"-XX:+TraceClassLoading"
+                   ;;"-XX:+PrintCompilation"
+                   ;;"-XX:MaxInlineSize=325"
+                   ;;"-XX:FreqInlineSize=1000"
+                   ;;"-Dclojure.compiler.direct-linking=true"
+                   ]
+        
         :pedantic? false
         :checkout-deps-shares ^:replace [:source-paths]
         :global-vars {*warn-on-reflection* true}
@@ -42,6 +56,10 @@
                           (defn reload-all []
                             (require (ns-name *ns*) :reload-all))
                           (defn reload-ns []
-                            (require (ns-name *ns*) :reload))))
+                            (require (ns-name *ns*) :reload))
+                          ;; TODO clean up and merge with above
+                          (defn rq
+                            ([] (rq (ns-name *ns*)))
+                            ([ns-nom] (require ns-nom :reload)))))
 
                      (setup-repl-env)]}}
